@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Input, Button, Row, Col, Card, Avatar, Icon } from 'antd';
+import { Menu, Input, Button, Row, Col, Card, Avatar, Icon, Form } from 'antd';
 import Link from 'next/link';
+import LoginForm from './loginForm';
 
 const dummy ={
     id: "",
@@ -9,7 +10,7 @@ const dummy ={
     Post:[],
     Followings:[],
     Followers: [],
-
+    isLoggedIn: false,
 }
 
 const AppLayout = ({children}) => {
@@ -23,7 +24,8 @@ const AppLayout = ({children}) => {
             </Menu.Item>
         </Menu>
         <Row>
-            <Col xs={24} md={8} >
+            <Col xs={12} md={8} >
+            {dummy.isLoggedIn?  
                 <Card 
                     style={{ width: 320 }}
                     actions={[<div><Icon type="aliwangwang" key="twit"/>포스트<br/>{dummy.Post.length}</div>,
@@ -33,8 +35,9 @@ const AppLayout = ({children}) => {
                     avatar={<Avatar>{dummy.nickname[0]}</Avatar>} 
                     title={dummy.nickname}
                     description="이것은 디스크립션입니다." />
-                </Card>
-                <Link href="/signup"><a><Button>회원가입</Button></a></Link>
+                </Card> 
+            :  <LoginForm/>     } 
+              
             </Col>
             <Col xs={24} md={8} >
                 {children}
