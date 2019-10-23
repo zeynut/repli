@@ -23,8 +23,8 @@ const AppLayout = ({children}) => {
                 <Input.Search enterButton style={{ verticalAlign : "middle"}} />
             </Menu.Item>
         </Menu>
-        <Row>
-            <Col xs={12} md={8} >
+        <Row gutter={[16,16]}>
+            <Col xs={8} md={8} >
             {dummy.isLoggedIn?  
                 <Card 
                     style={{ width: 320 }}
@@ -39,10 +39,10 @@ const AppLayout = ({children}) => {
             :  <LoginForm/>     } 
               
             </Col>
-            <Col xs={24} md={8} >
+            <Col xs={8} md={8} >
                 {children}
             </Col>
-            <Col xs={24} md={8} >
+            <Col xs={8} md={8} >
                 세번째 컬럼
             </Col>
         </Row>
