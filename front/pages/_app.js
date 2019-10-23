@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 
@@ -14,6 +15,9 @@ const Repli = ({Component}) => {
         </AppLayout>
         </>
     );
+}
+Repli.propTypes = {
+    Component: PropTypes.elementType,
 }
 
 export default Repli;

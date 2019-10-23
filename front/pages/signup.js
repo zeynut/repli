@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';    //usefallback 사용
-import AppLayout from '../components/AppLayout';
+import PropTypes from 'prop-types';
 import {Form , Input, Checkbox, Button } from 'antd';
 
 
@@ -77,11 +77,15 @@ const Signup = () => {
             {termError && <div style={{ color: 'red'}}>약관에 동의해주세요.</div>}
         </div> 
         <div style={{ marginTop : 20}}>
-            <Button type="primary" htmlType="submit">가입하기</Button>
+            <Button type="danger" htmlType="submit">가입하기</Button>
         </div>
         </Form>
         </>
     );
 };
+
+Signup.proptypes = {
+
+}
 
 export default Signup;

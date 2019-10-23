@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Profile = () => {
     return (
@@ -9,6 +10,10 @@ const Profile = () => {
             
         </>
     );
+}
+
+Profile.proptypes = {
+    
 }
 
 export default Profile;
