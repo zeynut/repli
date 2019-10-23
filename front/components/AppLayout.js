@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Input, Button, Row, Col, Card, Avatar, Icon, Form } from 'antd';
 import Link from 'next/link';
-import LoginForm from './loginForm';
+import LoginForm from './LoginForm';
+import UserProfile from './UserProfile';
 
 const dummy ={
     id: "",
@@ -25,19 +26,7 @@ const AppLayout = ({children}) => {
         </Menu>
         <Row gutter={[16,16]}>
             <Col xs={8} md={8} >
-            {dummy.isLoggedIn?  
-                <Card 
-                    style={{ width: 320 }}
-                    actions={[<div><Icon type="aliwangwang" key="twit"/>포스트<br/>{dummy.Post.length}</div>,
-                             <div><Icon type="usergroup-add" key="following"/>팔로잉<br/>{dummy.Followings.length}</div>,
-                             <div><Icon type="team" key="followers"/>팔로워<br/>{dummy.Followers.length}</div>]}>
-                    <Card.Meta 
-                    avatar={<Avatar>{dummy.nickname[0]}</Avatar>} 
-                    title={dummy.nickname}
-                    description="이것은 디스크립션입니다." />
-                </Card> 
-            :  <LoginForm/>     } 
-              
+                 {dummy.isLoggedIn?  <UserProfile/> :  <LoginForm/>     } 
             </Col>
             <Col xs={8} md={8} >
                 {children}
