@@ -4,17 +4,11 @@ import { Menu, Input, Button, Row, Col, Card, Avatar, Icon, Form } from 'antd';
 import Link from 'next/link';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
-
-const dummy ={
-    id: "",
-    nickname: "zeynut",
-    Post:[],
-    Followings:[],
-    Followers: [],
-    isLoggedIn: false,
-}
+import { useSelector , useDispatch }  from 'react-redux';
 
 const AppLayout = ({children}) => {
+    const { user, isLoggedIn } = useSelector( state => state.user);
+    const { mainPosts } = useSelector( state => state.post );
     return (
         <div>
         <Menu mode="horizontal">
@@ -26,7 +20,7 @@ const AppLayout = ({children}) => {
         </Menu>
         <Row gutter={[16,16]}>
             <Col xs={8} md={8} >
-                 {dummy.isLoggedIn?  <UserProfile/> :  <LoginForm/>     } 
+                 {isLoggedIn?  <UserProfile/> :  <LoginForm/>     } 
             </Col>
             <Col xs={8} md={8} >
                 {children}

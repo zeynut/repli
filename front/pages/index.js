@@ -7,32 +7,10 @@ import PostCard from '../components/PostCard';
 import { useDispatch , useSelector } from 'react-redux';
 import { LOG_IN } from '../reducers/user';
 
-const dummy = {
-    isLoggedIn : true,
-    imagePaths : [],
-    mainPosts: [{
-            User:{
-                id:1,
-                nickname:"제이넛",
-                content: "첫번째글입니다.",
-                img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            }
-        }],
-}
-
 const Home = () => {
     const dispatch = useDispatch();
     const { isLoggedIn , user } = useSelector( state => state.user) ;
     const { mainPosts } = useSelector( state => state.post );
-
-    useEffect( () => {
-        dispatch( {
-            type: LOG_IN, 
-            data: {
-                nickname: 'eeeeeeeeeeeeeee'
-            }
-        })
-    }, []);
 
     return (
         <>

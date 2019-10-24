@@ -1,23 +1,13 @@
 import React from 'react';
 import { Form , Input , Button } from 'antd';
-
-const dummy = {
-    isLoggedIn : true,
-    imagePaths : [],
-    mainPosts: [{
-            User:{
-                id:1,
-                nickname:"제이넛",
-                content: "첫번째글입니다.",
-                img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            }
-        }],
-}
+import {useSelector, useDispatch } from 'react-redux';
 
 const PostForm = () => {
+    const { user, isLoggedIn} = useSelector( state => state.user);
+    const { mainPosts, imagePaths } = useSelector( state => state.post );
     return (
     <>
-        <Form encType="multipart/form-data">
+        <Form style={{ margin : '10px 0 20px' }}encType="multipart/form-data">
         <Input.TextArea maxLength={140} placeholder="무슨일입니까??" />
         <div>
             <input type="file" multiple hidden/>
@@ -25,7 +15,7 @@ const PostForm = () => {
             <Button type="primary" style={{ float: "right"}} htmlType="submit">포스트</Button>
         </div>
         <div>
-            {dummy.imagePaths.map( (v, i) => {
+        {imagePaths.map( (v) => {
                 return (
                     <div key={v} style={{ display: 'inline-block'}}>
                         <img src={'http://localhost:3065/'+ v} style={{ width:"320px"}} alt={v}/>

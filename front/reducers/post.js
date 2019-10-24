@@ -3,9 +3,10 @@ export const initialState = {
         User:{
             id:1,
             nickname:"제이넛",
+            content: "첫번째글입니다.",
+            img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
+        
         },
-        content: "첫번째글입니다.",
-        img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
         
     }],
     imagePaths: [],
