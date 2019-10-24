@@ -1,6 +1,8 @@
 # repli
  SNS_conversation
  
+[Front]
+
 react, react-dom 사용
 
 next 사용
@@ -14,3 +16,5 @@ redux_devtools 사용
 useDispatch , useSelector 사용
 
 reux-saga 사용
+
+[Back]
