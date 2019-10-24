@@ -15,6 +15,6 @@ redux_devtools 사용
 
 useDispatch , useSelector 사용
 
-reux-saga 사용
+redux-saga 사용
 
 [Back]
