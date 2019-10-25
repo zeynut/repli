@@ -34,12 +34,10 @@ export const loginAction = {
     type: LOG_IN,
  }
 
-export const signupAction = (data) => {
-    return {
+export const signupAction = data => ({
         type: SIGN_UP,
         data: data,
-    }
-}; 
+}); 
 
 const reducer = ( state = initialState , action ) => {
     switch (action.type) {

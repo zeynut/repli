@@ -26,11 +26,11 @@ const Repli = ({Component , store}) => {
     );
 }
 Repli.propTypes = {
-    Component: PropTypes.elementType,
+    Component: PropTypes.elementType.isRequired,
     store: PropTypes.object,
 }
 
-export default withRedux( (initialState , options ) => {
+const configureStore = (initialState , options ) => {
     const sagaMiddleware = createSagaMiddleware();
     const middlewares = [sagaMiddleware];
     const enhancer = process.env.NODE_ENV ==='product' ?
@@ -40,4 +40,6 @@ export default withRedux( (initialState , options ) => {
     const store = createStore( reducer, initialState, enhancer);
     sagaMiddleware.run(rootSaga);
     return store;
-})(Repli);
+};
+
+export default withRedux(configureStore)(Repli);
