@@ -1,48 +1,147 @@
 export const initialState = {
+    
     mainPosts: [{
+        id:1,
         User:{
             id:1,
             nickname:"제이넛",
-            content: "첫번째글입니다.",
-            img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-        
+       
         },
-        
+        content: "첫번째글입니다.",
+            img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
+         Comments: [], 
     }],
     imagePaths: [],
+    addPostErrorReason: false,
+    isAddingPost: false,
+    isAddingComment: false,
+    postAdded: false,
+    addCommentErrorReason: false,
 };
 
-export const ADD_POST = 'ADD_POST';
-export const ADD_DUMMY = 'ADD_DUMMY';
-
-const addPost = {
-    type: ADD_POST
-}
-
-const addDummy = {
-    type: ADD_DUMMY,
-    data: {
-        content: '헬로우컨테트',
-        UserId: 1,
-        User: {
-            nickname: '제이넛',
-        },
+const dummyPost ={
+    id:2,
+    User: {
+        id: 2,
+        nickname: '추가더미',
+       
     },
+    content: '나는 더미 입니다.',
+    Comments: [],
 }
+
+const dummyComment = {
+    id:1,
+    User: {
+        id: 1,
+        nickname:'포스트더미커멘트',
+    },
+    createdAt: new Date(),
+    content: '더미 댓글입니다',
+}
+
+export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
+export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
+export const LOAD_MAIN_POSTS_FAILURE = 'LOAD_MAIN_POSTS_FAILURE';
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
+
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+
+export const UOLOAD_IMAGES_REQUEST = 'UOLOAD_IMAGES_REQUEST';
+export const UOLOAD_IMAGES_SUCCESS = 'UOLOAD_IMAGES_SUCCESS';
+export const UOLOAD_IMAGES_FAILURE = 'UOLOAD_IMAGES_FAILURE';
+
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST';
+export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
+export const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE';
+
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
+
 
 const reducer = ( state = initialState , action ) => {
     switch(action.type){
-        case ADD_POST: {
+        case ADD_POST_REQUEST: {
             return {
                 ...state,
+                isAddingPost: true,
+                addPostErrorReason: '',
+                postAdded: false,
             }
         }
-        case ADD_DUMMY : {
+        case ADD_POST_SUCCESS:{
             return {
                 ...state,
-                mainPosts: [action.data, ...state.mainPosts],
+                isAddingPost: false,
+                mainPosts: [dummyPost, ...state.mainPosts ],
+                postAdded: true,
             }
         }
+        case ADD_POST_FAILURE: {
+            return {
+                ...state,
+                isAddingPost: false,
+                addPostErrorReason: action.error,
+            }
+        }
+        case ADD_COMMENT_REQUEST: {
+            return {
+                ...state,
+                isAddingComment: true,
+                addCommentErrorReason: '',
+                commentAdded: false,
+            }
+        }
+        case ADD_COMMENT_SUCCESS:{
+            const postIndex = state.mainPosts.findIndex( v => v.id === action.data.postId);
+            const post = state.mainPosts[postIndex];
+            const Comments = [...post.Comments , dummyComment];
+            const mainPosts = [...state.mainPosts];
+            mainPosts[postIndex] = {...post , Comments };
+
+            return {
+                ...state,
+                isAddingComment: false,
+                mainPosts,
+                commentAdded: true,
+            }
+        }
+        case ADD_COMMENT_FAILURE: {
+            return {
+                ...state,
+                isAddingComment: false,
+                addCommentErrorReason: action.error,
+            }
+        }
+
         default : {
             return {
                 ...state,

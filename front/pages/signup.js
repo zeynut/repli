@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';    //usefallback 사용
+import React, { useState, useCallback, useEffect } from 'react';    //usefallback 사용
 import PropTypes from 'prop-types';
 import {Form , Input, Checkbox, Button } from 'antd';
 import { useSelector , useDispatch } from 'react-redux';
-import { signupAction } from '../reducers/user';
+import { signupAction, SIGN_UP_REQUEST } from '../reducers/user';
+import Router from 'next/router';
 
 export const useInput = (initValue = null ) => {
     const [value , setter] = useState(initValue);
@@ -14,6 +15,7 @@ export const useInput = (initValue = null ) => {
 }
 
 const Signup = () => {
+    const { isSigningUp, me } = useSelector( state => state.user);
     
     const [passwordCheck , setPasswordCheck] = useState('');
     const [term , setTerm] = useState(false);
@@ -26,6 +28,13 @@ const Signup = () => {
 
     const dispatch = useDispatch();
 
+    useEffect(()=>{
+        if(me) {
+            alert('로그인했으니 메인페이지로 이동합니다.');
+            Router.push('/');}
+
+    }, [me && me.id])
+
     const onSubmit = useCallback( (e) => {      //usefallback 사용
         e.preventDefault();
         if(password !== passwordCheck ){
@@ -35,14 +44,13 @@ const Signup = () => {
             return setTermError(true);
         }
 
-        dispatch( signupAction({
-            id,password,nick
-        })); 
-        
-        console.log({
-            id, nick, password,passwordCheck, term
+        return dispatch({
+            type: SIGN_UP_REQUEST,
+            data: {
+                id,password,nick,
+            },
         });
-
+       
     } , [password, passwordCheck , term ]);
    
     const onChangePasswordChk = useCallback( (e) => {       //usefallback 사용
@@ -84,7 +92,7 @@ const Signup = () => {
             {termError && <div style={{ color: 'red'}}>약관에 동의해주세요.</div>}
         </div> 
         <div style={{ marginTop : 20}}>
-            <Button type="danger" htmlType="submit">가입하기</Button>
+            <Button type="danger" htmlType="submit" loading={isSigningUp}>가입하기</Button>
         </div>
         </Form>
         </>
