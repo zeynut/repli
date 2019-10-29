@@ -7,9 +7,9 @@
 // }
 
 export const initialState = {
-    isLoggedIn: false,
-    isLoggedOut: false,
+    
     isLoggingIn: false,
+    isLoggingOut: false,
     loginErrorReason: '',
     signedUp: false,
     isSigningUp: false,
@@ -74,29 +74,18 @@ const reducer = ( state = initialState , action ) => {
                 ...state,
                 isLoggingIn: false,
                 isLoading:false,
-                isLoggedIn: true,
                 me: action.data,
             };
         }
         case LOG_IN_FAILURE : {
             return {
                 ...state,
-                isLoggedIn: false,
                 isLoggingIn:false,
                 me: null,
                 loginErrorReason: action.error,
             };
         }
-        case LOG_OUT_REQUEST : {
-            return {
-                ...state,
-                isLoggingIn: false,
-                isLoading:false,
-                isLoggedIn: false,
-                me: null,
-            }
-        }
-       
+              
         case SIGN_UP_REQUEST: {
             return {
                 ...state,
@@ -113,11 +102,44 @@ const reducer = ( state = initialState , action ) => {
                 signUpData: action.data,
             };
         }
+
         case SIGN_UP_FAILURE: {
             return {
                 ...state,
                 isSigningUp: false,
                 signUpErrorReason: action.error,
+            };
+        }
+
+        case LOG_OUT_REQUEST : {
+            return {
+                ...state,
+               isLoggingOut:true,
+                me: null,
+            }
+        }
+        case LOG_OUT_SUCCESS : {
+            return {
+                ...state,
+               isLoggingOut: false,
+               me: null,
+            }
+        }
+     
+        case LOAD_USER_REQUEST: {
+            return {
+                ...state,
+               };
+        }
+        case LOAD_USER_SUCCESS: {
+            return {
+                ...state,
+              me: action.data,
+            };
+        }
+        case LOAD_USER_FAILURE: {
+            return {
+                ...state,
             };
         }
         default : {
