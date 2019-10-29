@@ -46,12 +46,13 @@ const Signup = () => {
 
         return dispatch({
             type: SIGN_UP_REQUEST,
-            data: {
-                id,password,nick,
+            data: { userId: id,
+                    password,
+                    nickname: nick,
             },
         });
        
-    } , [password, passwordCheck , term ]);
+    } , [nick, id, password, passwordCheck , term ]);
    
     const onChangePasswordChk = useCallback( (e) => {       //usefallback 사용
         setPasswordError(e.target.value !== password );

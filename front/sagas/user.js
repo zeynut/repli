@@ -5,14 +5,13 @@ SIGN_UP_REQUEST, SIGN_UP_SUCCESS,SIGN_UP_FAILURE} from '../reducers/user';
 
 import axios from 'axios';
 
-function loginAPI() {
-    return axios.post('/login');
+function loginAPI(loginData) {
+    return axios.post('http://localhost:3065/api/user/login', loginData);
 }
 
-function* login(){
+function* login(action){
     try{
-            //yield call(loginAPI);
-            yield delay(1000);
+            yield call(loginAPI, action.data);
             yield put({
             type: LOG_IN_SUCCESS
            });
@@ -30,14 +29,13 @@ function* watchLogin(){
 }
 
 
-function signUpAPI() {
-    return axios.post('/signup');
+function signUpAPI(signUpData) {
+    return axios.post('http://localhost:3065/api/user/', signUpData);
 }
 
-function* signUp(){
-    try{
-            //yield call(signUpAPI);
-            yield delay(2000);
+function* signUp(action){
+    try{    console.log(action.data);
+            yield call(signUpAPI , action.data);
             yield put({ type: SIGN_UP_SUCCESS });
 
     }catch(e){
