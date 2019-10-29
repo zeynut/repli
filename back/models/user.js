@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.associate = (db) => {
-        db.User.hasMany(db.Post, {as : 'Post'});
+        db.User.hasMany(db.Post, {as : 'Posts'});
         db.User.hasMany(db.Comment);
         db.User.belongsToMany(db.Post , { through: 'Like', as: 'Liked'});
-        db.User.belongsToMany(db.User , { through: 'Follow', as: 'Followers'});
-        db.User.belongsToMany(db.User , { through: 'Follow' , as: 'Followings'});
+        db.User.belongsToMany(db.User , { through: 'Follow', as: 'Followers', foreignkey: 'followingId'});
+        db.User.belongsToMany(db.User , { through: 'Follow' , as: 'Followings' , foreignkey: 'followerId'});
     };
 
     return User;

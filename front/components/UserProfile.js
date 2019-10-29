@@ -17,7 +17,7 @@ const UserProfile = () => {
         <div>
             <Card 
                     style={{ width: 220 }}
-                    actions={[<div><Icon type="aliwangwang" key="twit"/>포스트<br/>{me.Post.length}</div>,
+                    actions={[<div><Icon type="aliwangwang" key="twit"/>포스트<br/>{me.Posts.length}</div>,
                              <div><Icon type="usergroup-add" key="following"/>팔로잉<br/>{me.Followings.length}</div>,
                              <div><Icon type="team" key="followers"/>팔로워<br/>{me.Followers.length}</div>]}>
                     <Card.Meta 

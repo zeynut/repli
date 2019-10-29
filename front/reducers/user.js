@@ -1,10 +1,10 @@
-const dummyUser = {
-    nickname: '제이넛',
-    Post: [],
-    Followers:[1,2,3],
-    Followings: [],
-    id: 1,
-}
+// const dummyUser = {
+//     nickname: '제이넛',
+//     Post: [],
+//     Followers:[1,2,3],
+//     Followings: [],
+//     id: 1,
+// }
 
 export const initialState = {
     isLoggedIn: false,
@@ -75,7 +75,7 @@ const reducer = ( state = initialState , action ) => {
                 isLoggingIn: false,
                 isLoading:false,
                 isLoggedIn: true,
-                me: dummyUser,
+                me: action.data,
             };
         }
         case LOG_IN_FAILURE : {

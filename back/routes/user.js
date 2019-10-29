@@ -41,26 +41,40 @@ router.post('/login', (req,res,next) => {
         if(info){
             return res.status(401).send(info.reason);
         }
-        return req.login( user, (loginErr) => {
-            if(loginErr){
+        return req.login( user, async (loginErr) => {
+           try{
+                if(loginErr){
                 return next(loginErr);
-            }
-            const filteredUser = Object.assign({}, user.toJSON());
-            delete filteredUser.password;
-            return res.json(filteredUser);
+                }
+                const fullUser = await db.User.findOne({
+                    where: {id: user.id},
+                    include: [{model: db.Post, as: 'Posts', attributes:['id']},
+                              {model: db.User, as: 'Followings', attributes:['id']},
+                              {model: db.User, as: 'Followers', attributes: ['id']}],
+                    attributes: ['id', 'nickname','userId'],
+                });
+                console.log('fulluser는: ', fullUser);
+                return res.json(fullUser);
+                // const filteredUser = Object.assign({}, user.toJSON());
+                //     delete filteredUser.password;
+                //      return res.json(filteredUser);
+           }catch(e){
+               console.error(e);
+               next(e);
+           }
+           
         });
     })(req,res,next);
 });
 
 
-router.get('/:id', (req,res) => {
-    
+router.post('/logout', (req,res) => {
+    req.logout();
+    req.session.destroy();
+    res.send('logout성공!');    
 });
 
-
-
-
-router.post('/logout', (req,res) => {
+router.get('/:id', (req,res) => {
     
 });
 

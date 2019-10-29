@@ -20,7 +20,10 @@ passportConfig();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 app.use(morgan('dev'));
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
     resave: false,
@@ -29,7 +32,8 @@ app.use(expressSession({
     cookie:{
         httpOnly: true,
         secure: false,
-    }
+    },
+    name: 'reactrepli'
 }));
 
 app.use(passport.initialize());

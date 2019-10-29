@@ -4,6 +4,7 @@ import {
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from '../reducers/post';
 import axios from 'axios';
 
+axios.defaults.baseURL = 'http://localhosst:3065/api';
 
 function addPostAPI(){
     return axios.post('/addpost');
