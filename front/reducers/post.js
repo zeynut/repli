@@ -101,7 +101,7 @@ const reducer = ( state = initialState , action ) => {
             return {
                 ...state,
                 isAddingPost: false,
-                mainPosts: [dummyPost, ...state.mainPosts ],
+                mainPosts: [action.data, ...state.mainPosts ],
                 postAdded: true,
             }
         }
@@ -140,6 +140,26 @@ const reducer = ( state = initialState , action ) => {
                 isAddingComment: false,
                 addCommentErrorReason: action.error,
             }
+        }
+
+        case LOAD_MAIN_POSTS_REQUEST: {
+            return {
+                ...state,
+                isAddingPost: true,
+               mainPosts:[],
+            }
+        }
+        case LOAD_MAIN_POSTS_SUCCESS:{
+            return {
+                ...state,
+                isAddingPost: false,
+                mainPosts: action.data,
+              }
+        }
+        case LOAD_MAIN_POSTS_FAILURE: {
+            return {
+                ...state,
+             }
         }
 
         default : {

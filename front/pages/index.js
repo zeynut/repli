@@ -5,18 +5,24 @@ import { Form , Input , Button, Card , Icon, Avatar } from 'antd';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { useDispatch , useSelector } from 'react-redux';
-import { LOG_IN } from '../reducers/user';
+import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { isLoggedIn , user } = useSelector( state => state.user) ;
+    const { me , user } = useSelector( state => state.user) ;
     const { mainPosts } = useSelector( state => state.post );
+
+    useEffect( ()=>{
+        dispatch({
+            type: LOAD_MAIN_POSTS_REQUEST,
+        });
+    }, []);
 
     return (
         <>
         <div>
-            { user ?<div>{user.nickname}로그인했습니다.</div>: <div>로그아웃했습니다.</div>}
-            {isLoggedIn && <PostForm/>}
+            { me ?<div>{me.nickname}로그인했습니다.</div>: <div>로그아웃했습니다.</div>}
+            {me && <PostForm/>}
             {mainPosts.map( (c) => { return ( <PostCard post={c} key={c.id}/>)})}
         </div>
         </>
