@@ -10,7 +10,7 @@ import createSagaMiddleware from '@redux-saga/core';
 import rootSaga from '../sagas';
 
 
-const Repli = ({Component , store}) => {
+const Repli = ({Component , store, pageProps}) => {
     return (
         <>
         <Provider store={store}>
@@ -19,16 +19,28 @@ const Repli = ({Component , store}) => {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
             </Head>
             <AppLayout style={{ padding: "5px"}}>
-                <Component/>
+                <Component {...pageProps}/>
             </AppLayout>
         </Provider>
         </>
     );
 }
+
 Repli.propTypes = {
     Component: PropTypes.elementType.isRequired,
-    store: PropTypes.object,
+    store: PropTypes.object.isRequired,
+    pageProps: PropTypes.object.isRequired
 }
+
+Repli.getInitialProps = async (context) => {
+    console.log(context);
+    const { ctx , Component } = context;
+    let pageProps = {};
+    if( Component.getInitialProps ){
+        pageProps = await Component.getInitialProps(ctx);
+    }
+    return { pageProps };
+};
 
 const configureStore = (initialState , options ) => {
     const sagaMiddleware = createSagaMiddleware();
@@ -41,5 +53,7 @@ const configureStore = (initialState , options ) => {
     sagaMiddleware.run(rootSaga);
     return store;
 };
+
+
 
 export default withRedux(configureStore)(Repli);

@@ -3,6 +3,7 @@ import { Card, Icon, Button, Avatar, Form, Input, List, Comment } from 'antd';
 import PropTypes from "prop-types";
 import {useSelector, useDispatch } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
+import Link from 'next/link';
 
 const PostCard = ({post}) => {
     const [ commentFormOpened, setCommentFormOpened ] = useState(false);
@@ -54,7 +55,20 @@ const PostCard = ({post}) => {
        <Card.Meta 
            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
            title={post.User.nickname}
-           description={post.content}
+           description={<div>{post.content.split(/(#[^\s]+)/g).map( 
+               (v) => {
+                        if( v.match(/#[^\s]+/)){
+                            return (
+                                <Link href={{
+                                    pathname: '/hashtag',
+                                    query: {tag: v.slice(1)} }}
+                                    as={`/hashtag/${v.slice(1)}`}
+                                    key={v}
+                                ><a>{v}</a></Link>
+                            )
+                      }
+                   return v;
+               })}</div>}
        />
        </Card>
         {commentFormOpened && (
