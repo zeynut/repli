@@ -34,7 +34,7 @@ function* watchLogin(){
 
 
 function signUpAPI(signUpData) {
-    return axios.post('/user', signUpData);
+    return axios.post('/user/', signUpData);
 }
 
 function* signUp(action){

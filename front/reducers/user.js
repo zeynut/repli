@@ -13,6 +13,7 @@ export const initialState = {
     loginErrorReason: '',
     signedUp: false,
     isSigningUp: false,
+    isSignedUp: false,
     signUpErrorReason: '',
     me:null,
     followingList: [],
@@ -60,7 +61,7 @@ export const signupAction = data => ({
         data: data,
 }); 
 
-const reducer = ( state = initialState , action ) => {
+export default ( state = initialState , action ) => {
     switch (action.type) {
         case LOG_IN_REQUEST : {
             return {
@@ -90,7 +91,7 @@ const reducer = ( state = initialState , action ) => {
             return {
                 ...state,
                 isSigningUp: true,
-                ISsignedUp: false,
+                isSignedUp: false,
                 signUpErrorReason: '',
               };
         }
@@ -98,8 +99,8 @@ const reducer = ( state = initialState , action ) => {
             return {
                 ...state,
                 isSigningUp: false,
-                ISsignedUp: true,
-                signUpData: action.data,
+                isSignedUp: true,
+               
             };
         }
 
@@ -150,5 +151,4 @@ const reducer = ( state = initialState , action ) => {
     }
 }
 
-export default reducer;
 

@@ -87,7 +87,7 @@ export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 
-const reducer = ( state = initialState , action ) => {
+export default ( state = initialState , action ) => {
     switch(action.type){
         case ADD_POST_REQUEST: {
             return {
@@ -170,4 +170,3 @@ const reducer = ( state = initialState , action ) => {
     }
 }
 
-export default reducer;

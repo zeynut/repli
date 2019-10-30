@@ -17,15 +17,15 @@ router.get('/', (req,res,next)=> {
 router.post('/', async (req,res,next)=> {
     try{
         const hashtags = req.body.content.match(/#[^\s]+/g);
-        
-        const newPost = await db.Post.create({
+         const newPost = await db.Post.create({
             content: req.body.content,
             UseId: req.user.id
         });
 
         if(hashtags){
             const result = await Promise.all(hashtags.map(
-                tag => db.Hashtag.findOrCreate({where: { name: tag.slice(1).toLowerCase()},
+                tag => db.Hashtag.findOrCreate({
+                    where: { name: tag.slice(1).toLowerCase()},
                 })
             ));
             console.log('result: ', result);

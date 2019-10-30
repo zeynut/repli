@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.get('/', async (req,res,next) => {
     try{
-        const posts = await db.post.findAll({
+        const posts = await db.Post.findAll({
             include: [{ model: db.User, attributes:['id', 'nickname']}],
-            order: [['createdAT', 'DESC']],
+            order: [['createdAt', 'DESC']],
         });
         res.json(posts);
 

@@ -5,13 +5,13 @@ const passport = require('passport');
 const router = express.Router();
 
 //사용자 불러오기
-router.get('/', (req,res,next) => {
+router.get('/', (req,res) => {
     if(!req.user){
         return res.status(401).send('로그인 정보가 없습니다.');
     }
     const user = Object.assign({}, req.user.toJSON());
     delete user.password;
-    return res.status(200).json(req.user);
+    return res.json(user);
 });
 
 

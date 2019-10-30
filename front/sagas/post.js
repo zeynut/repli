@@ -26,8 +26,8 @@ function* watchAddPost(){
 };
 
 
-function addCommentAPI(postData){
-    return axios.post('/addComment',postData, {withCredentials: true});
+function addCommentAPI(){
+    // return axios.post('/addComment',postData, {withCredentials: true});
 }
 
 function* addComment(action) {
