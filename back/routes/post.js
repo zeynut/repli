@@ -19,7 +19,7 @@ router.post('/', async (req,res,next)=> {
         const hashtags = req.body.content.match(/#[^\s]+/g);
          const newPost = await db.Post.create({
             content: req.body.content,
-            UseId: req.user.id
+            UserId: req.user.id
         });
 
         if(hashtags){

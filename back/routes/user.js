@@ -9,6 +9,7 @@ router.get('/', (req,res) => {
     if(!req.user){
         return res.status(401).send('로그인 정보가 없습니다.');
     }
+    console.log('!req.user:',req.user);
     const user = Object.assign({}, req.user.toJSON());
     delete user.password;
     return res.json(user);
@@ -42,7 +43,8 @@ router.post('/' , async(req,res,next) => {
 router.post('/login', (req,res,next) => {
     passport.authenticate('local', (err,user,info)=> {
         if(err){
-            console.error(e);
+            console.log('로그인라우트에러');
+            console.error(err);
             return next(err);
         }
         if(info){
@@ -62,9 +64,7 @@ router.post('/login', (req,res,next) => {
                 });
                 console.log('fulluser는: ', fullUser);
                 return res.json(fullUser);
-                // const filteredUser = Object.assign({}, user.toJSON());
-                //     delete filteredUser.password;
-                //      return res.json(filteredUser);
+           
            }catch(e){
                console.error(e);
                next(e);

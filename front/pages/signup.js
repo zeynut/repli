@@ -54,15 +54,15 @@ const Signup = () => {
        
     } , [nick, id, password, passwordCheck , term ]);
    
-    const onChangePasswordChk = useCallback( (e) => {       //usefallback 사용
+    const onChangePasswordChk = useCallback( (e) => {       //usecallback 사용
         setPasswordError(e.target.value !== password );
         setPasswordCheck(e.target.value);
     } , [password]);
 
-    const onChangeTerm = useCallback( (e) => {       //usefallback 사용
+    const onChangeTerm = useCallback( (e) => {       //usecallback 사용
         setTermError(false);
         setTerm(e.target.checked);
-    } , []);
+    } , [term]);
     
     return (
         <>

@@ -9,7 +9,7 @@ import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { me , user } = useSelector( state => state.user) ;
+    const { me } = useSelector( state => state.user) ;
     const { mainPosts } = useSelector( state => state.post );
 
     useEffect( ()=>{
@@ -21,9 +21,9 @@ const Home = () => {
     return (
         <>
         <div>
-            { me ?<div>{me.nickname}로그인했습니다.</div>: <div>로그아웃했습니다.</div>}
+            { me ?<div>{me.nickname}로그인했습니다.</div>: <div>로그아웃했습니다index.js</div>}
             {me && <PostForm/>}
-            {mainPosts.map( (c) => { return ( <PostCard post={c} key={c.id}/>)})}
+            {mainPosts.map( (c) => { return ( <PostCard key={c.id}  post={c} />)})}
         </div>
         </>
     );

@@ -26,7 +26,7 @@ const User = ({id}) => {
                         ]} 
                         >
                         <Card.Meta
-                            avatar={<avatar>{userInfo.nickname[0]}</avatar>}
+                            avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
                             title={userInfo.nickname}
                         />
                 </Card> 

@@ -7,13 +7,14 @@ LOAD_USER_REQUEST,LOAD_USER_SUCCESS,LOAD_USER_FAILURE} from '../reducers/user';
 import axios from 'axios';
 
 function loginAPI(loginData) {
+    console.log('로그인api');
     return axios.post('/user/login', loginData,{
         withCredentials: true,
     });
 }
 
 function* login(action){
-    try{
+    try{  console.log('로그인action');
             const result = yield call(loginAPI, action.data);
             yield put({
             type: LOG_IN_SUCCESS,
@@ -38,7 +39,7 @@ function signUpAPI(signUpData) {
 }
 
 function* signUp(action){
-    try{    console.log(action.data);
+    try{    console.log('signup: ',action.data);
             yield call(signUpAPI , action.data);
             yield put({ type: SIGN_UP_SUCCESS });
 

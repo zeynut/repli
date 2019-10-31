@@ -11,6 +11,7 @@ const passportConfig = require('./passport');
 const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
 const postsAPIRouter = require('./routes/posts');
+const hashtagAPIRouter = require('./routes/hashtag');
 
 dotenv.config();
 const app = express();
@@ -33,7 +34,7 @@ app.use(expressSession({
         httpOnly: true,
         secure: false,
     },
-    name: 'reactrepli'
+    name: 'reactrepli2'
 }));
 
 app.use(passport.initialize());
@@ -42,6 +43,7 @@ app.use(passport.session());
 app.use('/api/user', userAPIRouter);
 app.use('/api/post', postAPIRouter);
 app.use('/api/posts', postsAPIRouter);
+app.use('/api/hashtag', hashtagAPIRouter);
 
 app.get('/' , (req,res) => {
     res.send('Hello, Im Back');

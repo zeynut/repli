@@ -7,7 +7,7 @@ import { LOAD_HASHTAG_POSTS_REQUEST } from '../reducers/post';
 
 const Hashtag = ({tag}) => {
     console.log(tag);
-    const dispatch = useDispatch
+    const dispatch = useDispatch();
     const {mainPosts} = useSelector( state => state.post);
 
     useEffect ( () => {
@@ -19,10 +19,10 @@ const Hashtag = ({tag}) => {
     
     return (
         <div>
-            {mainPosts.map( (c) => {
+            {mainPosts.map( c => (
                 console.log(c),
                 <PostCard key={+c.createdAt} post={c} />
-            })}
+            ))}
         </div>
     );
 };

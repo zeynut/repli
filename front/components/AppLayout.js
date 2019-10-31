@@ -8,7 +8,7 @@ import { useSelector , useDispatch }  from 'react-redux';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const AppLayout = ({children}) => {
-    const { me , isLoggedIn } = useSelector( state => state.user);
+    const { me } = useSelector( state => state.user);
     const { mainPosts } = useSelector( state => state.post );
     const dispatch = useDispatch();
 

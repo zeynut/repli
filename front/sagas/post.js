@@ -47,12 +47,15 @@ function* watchAddComment(){
 };
 
 function loadMainPostsAPI(){
+    console.log('로드메인포스트api');
     return axios.get('/posts');
 }
 
 function* loadMainPosts() {
     try{
+        console.log('로드메인포스트action');
         const result = yield call(loadMainPostsAPI);
+        console.log('로드메인포스트result');
         yield put({ type:LOAD_MAIN_POSTS_SUCCESS, data: result.data });
 
     }catch(e){
