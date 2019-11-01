@@ -31,7 +31,10 @@ Repli.propTypes = {
     store: PropTypes.object.isRequired,
     pageProps: PropTypes.object.isRequired
 }
-
+//만약 getinitialprops 가 있는 페이지는 context(ctx) 를 pageprops 에 넣어서 잔달한다//
+//받는쪽..다른페이지..에서는 context 로 받음
+//서버 관련 명령어들도 다 여기에 씀
+  
 Repli.getInitialProps = async (context) => {
     console.log(context);
     const { ctx , Component } = context;

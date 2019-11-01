@@ -2,8 +2,12 @@ import { delay, all , call, fork, takeEvery, takeLatest, put } from 'redux-saga/
 import { 
     ADD_POST_REQUEST, ADD_POST_SUCCESS,ADD_POST_FAILURE,
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
-     LOAD_MAIN_POSTS_REQUEST, LOAD_MAIN_POSTS_SUCCESS,LOAD_MAIN_POSTS_FAILURE } from '../reducers/post';
-import axios from 'axios';
+     LOAD_MAIN_POSTS_REQUEST, LOAD_MAIN_POSTS_SUCCESS,LOAD_MAIN_POSTS_FAILURE, 
+     LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_SUCCESS,
+      LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE,
+    LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS,LOAD_COMMENTS_FAILURE } from '../reducers/post';
+
+      import axios from 'axios';
 
 function addPostAPI(postData){
     return axios.post('/post', postData, {withCredentials: true});
@@ -12,7 +16,7 @@ function addPostAPI(postData){
 function* addPost(action) {
     try{
       
-        const result = yield call(addPostAPI, acation.data);
+        const result = yield call(addPostAPI, action.data);
         yield put({ type:ADD_POST_SUCCESS, data: result.data });
 
     }catch(e){
@@ -26,25 +30,6 @@ function* watchAddPost(){
 };
 
 
-function addCommentAPI(){
-    // return axios.post('/addComment',postData, {withCredentials: true});
-}
-
-function* addComment(action) {
-    try{
-       yield call(addCommentAPI);
-       yield put({ type: ADD_COMMENT_SUCCESS,
-                    data: {postId: action.data.postId,} });
-
-    }catch(e){
-        console.error(e);
-        yield put({ type: ADD_COMMENT_FAILURE, error: e });
-    }
-}
-
-function* watchAddComment(){
-    yield takeLatest(ADD_COMMENT_REQUEST,addComment)
-};
 
 function loadMainPostsAPI(){
     console.log('로드메인포스트api');
@@ -68,10 +53,87 @@ function* watchLoadMainPosts(){
     yield takeLatest(LOAD_MAIN_POSTS_REQUEST,loadMainPosts)
 };
 
+
+function loadHashTagPostsAPI(tag){
+    console.log('로드hashtag포스츠api');
+    return axios.get(`/hashtag/${tag}`);
+}
+
+function* loadHashtagPosts(action) {
+    try{
+        console.log('로드hashtag포스츠action');
+        const result = yield call(loadHashTagPostsAPI , action.data);
+        console.log('로드hashtag포스츠result',result);
+        yield put({ type:LOAD_HASHTAG_POSTS_SUCCESS , data: result.data });
+
+    }catch(e){
+        console.error(e);
+        yield put({ type: LOAD_HASHTAG_POSTS_FAILURE, error: e });
+    }
+}
+
+function* watchLoadHashtagPosts(){
+    yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST,loadHashtagPosts)
+};
+
+function loadUserPostsAPI(id) {
+    return axios.get(`/user/${id}/posts`);
+}
+function* loadUserPosts(action){
+    try{   
+            const result = yield call(loadUserPostsAPI, action.data);
+            yield put({ type: LOAD_USER_POSTS_SUCCESS , data: result.data });
+    }catch(e){
+            console.error(e);
+            yield put( { type: LOAD_USER_POSTS_FAILURE , error: e });
+    }
+}
+function* watchLoadUserPosts(){
+    yield takeLatest(LOAD_USER_POSTS_REQUEST, loadUserPosts);
+}
+function loadCommentsAPI(postId) {
+    return axios.get(`/post/${postId}/comments`);
+}
+function* loadComments(action){
+    try{   
+            const result = yield call(loadCommentsAPI, action.data);
+            yield put({ type: LOAD_COMMENTS_SUCCESS , 
+                        data: {postId: action.data, comments: result.data} });
+    }catch(e){
+            console.error(e);
+            yield put( { type: LOAD_COMMENTS_FAILURE , error: e });
+    }
+}
+function* watchLoadComments(){
+    yield takeLatest(LOAD_COMMENTS_REQUEST, loadComments);
+}
+function addCommentAPI(data){
+    return axios.post(`/post/${data.PostId}/comment`,{content: data.content}, {withCredentials: true});
+}
+
+function* addComment(action) {
+    try{
+       const result = yield call(addCommentAPI , action.data);
+       yield put({ type: ADD_COMMENT_SUCCESS,
+                    data: {PostId: action.data.PostId, comment: result.data} });
+
+    }catch(e){
+        console.error(e);
+        yield put({ type: ADD_COMMENT_FAILURE, error: e });
+    }
+}
+
+function* watchAddComment(){
+    yield takeLatest(ADD_COMMENT_REQUEST,addComment)
+};
+
 export default function* postSaga() {
     yield all([
         fork(watchAddPost),
         fork(watchAddComment),
         fork(watchLoadMainPosts),
+        fork(watchLoadHashtagPosts),
+        fork(watchLoadUserPosts),
+        fork(watchLoadComments),
     ]);
 }

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import PropsTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import PostCard from '../components/PostCard';
 import { LOAD_HASHTAG_POSTS_REQUEST } from '../reducers/post';
 
 
 const Hashtag = ({tag}) => {
-    console.log(tag);
+    console.log('!해쉬테그의TAG:',tag);
+    
     const dispatch = useDispatch();
     const {mainPosts} = useSelector( state => state.post);
 
@@ -32,7 +33,7 @@ Hashtag.propTypes = {
 }
 
 Hashtag.getInitialProps = async (context) => {
-    console.log('해쉬테그겟이니셜프롭스: ',context.query.tag);
+    console.log('!해쉬테그겟이니셜프롭스: ',context.query.tag);
     return { tag: context.query.tag };
 };
 

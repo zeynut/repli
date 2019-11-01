@@ -20,9 +20,9 @@ const User = ({id}) => {
         <div>
             { userInfo? 
                 (<Card actions ={[ 
-                            <div key="twit">포스트 <br/>{userInfo.Posts}</div>,
-                            <div key="following">팔로잉 <br/>{userInfo.followings}</div>,
-                            <div key="follower">팔로워<br/>{userInfo.followers}</div>,
+                            <div key="twit">포스트<br/>{userInfo.Posts}</div>,
+                            <div key="following">팔로잉 <br/>{userInfo.Followings}</div>,
+                            <div key="follower">팔로워<br/>{userInfo.Followers}</div>,
                         ]} 
                         >
                         <Card.Meta
@@ -41,7 +41,7 @@ User.propTypes = {
 }
 
 User.getInitialProps = async ( context ) => {
-    console.log('user getinitial props :' , context.query.id);
+    console.log('!user getinitial props :' , context.query.id);
     return { id:parseInt(context.query.id , 10)};
 }
 
