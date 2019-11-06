@@ -108,14 +108,14 @@ function* watchLoadComments(){
     yield takeLatest(LOAD_COMMENTS_REQUEST, loadComments);
 }
 function addCommentAPI(data){
-    return axios.post(`/post/${data.PostId}/comment`,{content: data.content}, {withCredentials: true});
+    return axios.post(`/post/${data.postId}/comment`,{content: data.content}, {withCredentials: true});
 }
 
 function* addComment(action) {
     try{
        const result = yield call(addCommentAPI , action.data);
        yield put({ type: ADD_COMMENT_SUCCESS,
-                    data: {PostId: action.data.PostId, comment: result.data} });
+                    data: {postId: action.data.postId, comment: result.data} });
 
     }catch(e){
         console.error(e);

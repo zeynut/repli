@@ -67,8 +67,11 @@ router.get('/:id/comments', async (req, res,next) => {
 });
 
 
-router.get('/:id/comment', async (req, res,next) => {
+router.post('/:id/comment', async (req, res,next) => {
     try{
+        if(!req.user){
+            return res.status(401).send('로그인이필요합니다.');
+        }
         const post = await db.Post.findOne({ where: {id: req.params.id}});
         if(!post){
             return res.status(404).send('포스트가 존재하지 않습니다.');
@@ -88,7 +91,7 @@ router.get('/:id/comment', async (req, res,next) => {
         return res.json(comment);
     }catch(e){
         console.error(e);
-        next(e);
+        return next(e);
     }
 });
 module.exports = router;
