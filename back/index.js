@@ -44,6 +44,7 @@ app.use('/api/user', userAPIRouter);
 app.use('/api/post', postAPIRouter);
 app.use('/api/posts', postsAPIRouter);
 app.use('/api/hashtag', hashtagAPIRouter);
+app.use('/', express.static('uploads'));
 
 app.get('/' , (req,res) => {
     res.send('Hello, Im Back');

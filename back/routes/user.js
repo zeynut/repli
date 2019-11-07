@@ -3,12 +3,11 @@ const db = require('../models');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const router = express.Router();
+const { isLoggedIn } = require('./middleware'); 
 
 //사용자 불러오기
-router.get('/', (req,res) => {
-    if(!req.user){
-        return res.status(401).send('로그인 정보가 없습니다.');
-    }
+router.get('/', isLoggedIn , (req,res) => {
+   
     console.log('!req.user:',req.user);
     const user = Object.assign({}, req.user.toJSON());
     delete user.password;
