@@ -30,14 +30,14 @@ const AppLayout = ({children}) => {
             </Menu.Item>
         </Menu>
         <Row gutter={[16,16]}>
-            <Col xs={8} md={8} >
+            <Col xs={11} md={8} >
                  {me?  <UserProfile/> :  <LoginForm/>     } 
             </Col>
-            <Col xs={8} md={8} >
+            <Col xs={11} md={8} >
                 {children}
             </Col>
-            <Col xs={8} md={8} >
-                세번째 컬럼
+            <Col xs={2} md={8} >
+                세번째컬럼
             </Col>
         </Row>
 

@@ -1,22 +1,13 @@
 export const initialState = {
     
-    mainPosts: [{
-        id:1,
-        User:{
-            id:1,
-            nickname:"제이넛",
-       
-        },
-        content: "첫번째글입니다.",
-            img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-         Comments: [], 
-    }],
+    mainPosts: [],
     imagePaths: [],
     addPostErrorReason: false,
     isAddingPost: false,
     isAddingComment: false,
     postAdded: false,
     addCommentErrorReason: false,
+    commentAdded: false,
 };
 
 const dummyPost ={
@@ -115,6 +106,7 @@ export default ( state = initialState , action ) => {
                 isAddingPost: false,
                 mainPosts: [action.data, ...state.mainPosts ],
                 postAdded: true,
+                imagePaths: [],
             }
         }
         case ADD_POST_FAILURE: {
@@ -244,6 +236,70 @@ export default ( state = initialState , action ) => {
               }
         }
         case UPLOAD_IMAGES_FAILURE: {
+            return {
+                ...state,
+             }
+        }
+        case LIKE_POST_REQUEST: {
+           
+            return {
+              ...state,
+            }
+        }
+        case LIKE_POST_SUCCESS:{
+            
+            const postIndex = state.mainPosts.findIndex( v => v.id === action.data.postId);
+            const post = state.mainPosts[postIndex];
+            const Likers = [{ id: action.data.userId }, ...post.Likers];
+            const mainPosts = [...state.mainPosts];
+            mainPosts[postIndex] = {...post, Likers};
+
+            return {
+                ...state,
+                mainPosts,
+            }
+        }
+        case LIKE_POST_FAILURE: {
+            return {
+                ...state,
+             }
+        }
+        case UNLIKE_POST_REQUEST: {
+            return {
+              ...state,
+            }
+        }
+        case UNLIKE_POST_SUCCESS:{
+
+            const postIndex = state.mainPosts.findIndex( v => v.id === action.data.postId);
+            const post = state.mainPosts[postIndex];
+            const Likers = post.Likers.filter( v => v.id !== action.data.userId);
+            const mainPosts = [...state.mainPosts];
+            mainPosts[postIndex] = {...post, Likers};
+
+            return {
+                ...state,
+                mainPosts,
+            }
+        }
+        case UNLIKE_POST_FAILURE: {
+            return {
+                ...state,
+             }
+        }
+
+        case RETWEET_REQUEST: {
+            return {
+              ...state,
+            }
+        }
+        case RETWEET_SUCCESS:{
+            return {
+                ...state,
+            mainPosts: [action.data, ...state.mainPosts ]
+              }
+        }
+        case RETWEET_FAILURE: {
             return {
                 ...state,
              }

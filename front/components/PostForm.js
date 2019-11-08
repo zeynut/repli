@@ -21,16 +21,19 @@ const PostForm = () => {
     const onSubmitForm = useCallback(  (e) =>{
         e.preventDefault();
         if(!text || !text.trim()){
-            return alert('게시글을 작성하세요.')
+            return alert('게시글을 작성하세요.');
         }
+        const formData = new FormData();
+        imagePaths.forEach( (i) => {
+            formData.append('image' , i);
+        });
+        formData.append('content' , text );
         dispatch({
             type: ADD_POST_REQUEST,
-            data: {
-                content: text.trim(),
-            },
+            data: formData,
         });
          
-    } , [text]);
+    } , [text, imagePaths]);
 
     const onChangeText = useCallback( (e)=> {
         setText(e.target.value);
@@ -72,16 +75,16 @@ const PostForm = () => {
             <Button onClick={onClickImageUpload}>이미지 업로도</Button>
             <Button type="primary" style={{ float: "right"}} htmlType="submit" loading={isAddingPost}>포스트</Button>
         </div>
-        <div>
-        {imagePaths.map( (v, i) => {
+        <div>여기에 이미지 미리보기 표시
+        {imagePaths.map( (v, i) => (
                         <div key={v} style={{ display: 'inline-block'}}>
-                        <img src={'http://localhost:3065/${v}'} 
-                        style={{ width: "220px"}} 
+                        <img src={`http://localhost:3065/${v}`} 
+                        style={{ width: '200px'}} 
                         alt={v}/>
                         <div><Button onClick={onRemoveImage(i)}>제거</Button></div>
                     </div>
                 
-            })}
+        ))}
         </div>
         </Form>
     </>
