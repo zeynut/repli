@@ -13,6 +13,7 @@ import {
  } from '../reducers/post';
 
 import axios from 'axios';
+import { ADD_POST_TO_ME } from '../reducers/user';
 
 function addPostAPI(postData){
     return axios.post('/post', postData, {withCredentials: true});
@@ -23,6 +24,7 @@ function* addPost(action) {
       
         const result = yield call(addPostAPI, action.data);
         yield put({ type:ADD_POST_SUCCESS, data: result.data });
+        yield put( { type: ADD_POST_TO_ME, data: result.data.id});
 
     }catch(e){
         console.error(e);
