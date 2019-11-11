@@ -1,25 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Input, Button, Row, Col, Card, Avatar, Icon, Form } from 'antd';
 import Link from 'next/link';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
-import { useSelector , useDispatch }  from 'react-redux';
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import { useSelector }  from 'react-redux';
+
 
 const AppLayout = ({children}) => {
     const { me } = useSelector( state => state.user);
-    const { mainPosts } = useSelector( state => state.post );
-    const dispatch = useDispatch();
-
-    useEffect( () => {
-        if(!me){
-            dispatch(
-                {type:LOAD_USER_REQUEST}
-            );
-        }
-    }, []);
-
+ 
     return (
         <div>
         <Menu mode="horizontal">

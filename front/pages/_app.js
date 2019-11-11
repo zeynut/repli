@@ -5,12 +5,15 @@ import AppLayout from '../components/AppLayout';
 import { Provider } from 'react-redux';
 import { createStore , compose , applyMiddleware } from 'redux';
 import withRedux from 'next-redux-wrapper'
+import withReduxSaga from 'next-redux-saga';
+import axios from 'axios';
 import reducer from '../reducers';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
-
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const Repli = ({Component , store, pageProps}) => {
+   
     return (
         <>
         <Provider store={store}>
@@ -41,24 +44,36 @@ Repli.getInitialProps = async (context) => {
     console.log(context);
     const { ctx , Component } = context;
     let pageProps = {};
+    const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+    console.log('!cookie쿠키입니다:' , cookie);
+    if( ctx.isServer && cookie){
+        axios.defaults.headers.Cookie = cookie;
+    }
     if( Component.getInitialProps ){
         pageProps = await Component.getInitialProps(ctx);
+    }
+    const state = ctx.store.getState();
+    if(!state.user.me){
+        ctx.store. dispatch({type:LOAD_USER_REQUEST});
     }
     return { pageProps };
 };
 
 const configureStore = (initialState , options ) => {
     const sagaMiddleware = createSagaMiddleware();
-    const middlewares = [sagaMiddleware];
+
+    const middlewares = [sagaMiddleware, (store) => (next) => (action) => { 
+        console.log(action);
+        next(action);
+    }];
+    
     const enhancer = process.env.NODE_ENV ==='production' ?
         compose(applyMiddleware(...middlewares))
      : compose(applyMiddleware(...middlewares),
         !options.isServer && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,);
     const store = createStore( reducer, initialState, enhancer);
-    sagaMiddleware.run(rootSaga);
+    store.sagaTask = sagaMiddleware.run(rootSaga);
     return store;
 };
 
-
-
-export default withRedux(configureStore)(Repli);
+export default withRedux(configureStore)(withReduxSaga(Repli));

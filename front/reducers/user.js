@@ -13,13 +13,14 @@ export const initialState = {
     loginErrorReason: '',
     signedUp: false,
     isSigningUp: false,
-    isSignedUp: false,
     signUpErrorReason: '',
     me:null,
     followingList: [],
     followerList: [],
     userInfo: null,
     signUpData: {},
+    isEditingNickname: false,
+    editNicknameErrorReason: '',
 }
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
@@ -55,6 +56,7 @@ export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
 export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
 export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
@@ -63,6 +65,10 @@ export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
 export const LOAD_FOLLOWINGS_REQUEST = 'LOAD_FOLLOWINGS_REQUEST';
 export const LOAD_FOLLOWINGS_SUCCESS = 'LOAD_FOLLOWINGS_SUCCESS';
 export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
+
+export const EDIT_NICKNAME_REQUEST = 'EDIT_NICKNAME_REQUEST';
+export const EDIT_NICKNAME_SUCCESS = 'EDIT_NICKNAME_SUCCESS';
+export const EDIT_NICKNAME_FAILURE = 'EDIT_NICKNAME_FAILURE';
 
 export const signupAction = data => ({
         type: SIGN_UP_REQUEST,
@@ -108,7 +114,7 @@ export default ( state = initialState , action ) => {
                 ...state,
                 isSigningUp: false,
                 isSignedUp: true,
-               
+                      
             };
         }
 
@@ -265,6 +271,42 @@ export default ( state = initialState , action ) => {
             return {
                 ...state,
             };
+        }
+
+        case EDIT_NICKNAME_REQUEST: {
+            return {
+                ...state,
+                isEditingNickname: true,
+                editNicknameErrorReason: '',
+               };
+        }
+        case EDIT_NICKNAME_SUCCESS: {
+            
+            return {
+                    ...state,
+                    isEditingNickname: false,
+                  me: {
+                      ...state.me ,
+                       nickname: action.data
+                  }  
+                };
+        }
+        case EDIT_NICKNAME_FAILURE: {
+            return {
+                ...state,
+                isEditingNickname: false,
+                editNicknameErrorReason: action.error,
+            };
+        }
+        case REMOVE_POST_OF_ME : {
+            return {
+                ...state,
+                me: {
+                    ...state.me,
+                    Posts: state.me.Posts.filter( v => v.id !== action.data),
+                }
+            }
+
         }
         default : {
             return {

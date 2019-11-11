@@ -1,4 +1,4 @@
-import React , {useEffect, useCallback} from 'react';
+import React , { useCallback} from 'react';
 import { Input, Button, Form, List, Card, Icon } from 'antd';
 import { useDispatch , useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,19 +15,13 @@ const dispatch = useDispatch();
 const { me, followingList, followerList } = useSelector( state => state.user);
 const { mainPosts } = useSelector( state => state.post ); 
 
-    useEffect( () => {
-        if(me){
-            dispatch({ type: LOAD_FOLLOWERS_REQUEST, data: me.id });
-            dispatch({ type: LOAD_FOLLOWINGS_REQUEST, data: me.id });
-            dispatch({ type: LOAD_USER_POSTS_REQUEST, data: me.id });
-        }
-    } , [ me && me.id]);
+  
 
-const onUnfollow = useCallback( userId => {
+const onUnfollow = useCallback( userId => () => {
     dispatch({type: UNFOLLOW_USER_REQUEST, data: userId});
  } , []);
 
-const onRemoveFollower = useCallback( () => {
+const onRemoveFollower = useCallback( userId => () => {
     dispatch({ type: REMOVE_FOLLOWER_REQUEST , data: userId});
 } , []);
 
@@ -46,7 +40,8 @@ return (
                 renderItem={
                     item => (
                         <List.Item style={{ marginTop : "20px"}}>
-                            <Card actions={[<Icon key="stop" type="stop" onClick={onUnfollow(item.id)}/>]}>
+                            <Card actions={[<Icon key="stop" type="stop" 
+                                  onClick={onUnfollow(item.id)}/>]}>
                                 <Card.Meta description={item.nickname} />
                             </Card>
                         </List.Item>
@@ -63,7 +58,8 @@ return (
                 renderItem={
                     item => (
                         <List.Item style={{ marginTop : "20px"}}>
-                            <Card actions={[ <Icon key="stop" type="stop" onClick={onRemoveFollower(item.id)}/>]}>
+                            <Card actions={[ <Icon key="stop" type="stop" 
+                                  onClick={onRemoveFollower(item.id)}/>]}>
                                 <Card.Meta description={item.nickname} />
                             </Card>
                         </List.Item>
@@ -81,6 +77,19 @@ return (
 
 Profile.proptypes = {
 
+}
+
+Profile.getInitialProps = async ( context ) => {
+    
+ const state = context.store.getState();
+  
+ 
+    context.store.dispatch({ type: LOAD_FOLLOWERS_REQUEST, data: state.user.me && state.user.me.id });
+    context.store.dispatch({ type: LOAD_FOLLOWINGS_REQUEST, data: state.user.me && state.user.me.id });
+    context.store.dispatch({ type: LOAD_USER_POSTS_REQUEST, data: state.user.me && state.user.me.id });
+ 
+    
+ console.log('!겟이니셜프롭스미쩜아이디는?state.user.me.id: , me.id',state.user.me , state.user.me.id);  
 }
 
 export default Profile;

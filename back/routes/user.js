@@ -105,7 +105,7 @@ router.get('/:id', async (req,res,next) => {
 router.get('/:id/posts', async (req,res,next) => {
     try{
         const posts = await db.Post.findAll( { 
-            where: {UserId: parseInt(req.params.id, 10), RetweetId: null},
+            where: {UserId: parseInt(req.params.id, 10) || (req.user && req.user.id) , RetweetId: null},
             include: [{ model: db.User, attributes: ['id','nickname']} ,
                        {model: db.Image},
                        { model: db.User, through: 'Like', as: 'Likers', attributes: ['id']}, 
@@ -150,7 +150,8 @@ router.delete('/:id/follow', isLoggedIn , async (req,res) => {
 
 router.get('/:id/followings', isLoggedIn, async (req,res,next) => {
     try{
-        const user = await db.User.findOne({ where: { id: [parseInt(req.params.id , 10)]}});
+        const user = await db.User.findOne({ 
+            where: { id: parseInt(req.params.id , 10) || (req.user && req.user.id) || 0}});
         const followers = await user.getFollowings({ attributes: ['id', 'nickname']});
         res.send(followers);
 
@@ -165,7 +166,8 @@ router.get('/:id/followings', isLoggedIn, async (req,res,next) => {
 router.get('/:id/followers', isLoggedIn, async (req,res, next) => {
     
     try{
-        const user = await db.User.findOne({ where: { id: [parseInt(req.params.id , 10)]}});
+        const user = await db.User.findOne({ 
+            where: { id: parseInt(req.params.id , 10) || ( req.user && req.user.id ) || 0}});
         const followers = await user.getFollowers({ attributes: ['id', 'nickname']});
         res.send(followers);
     }catch(e){
@@ -187,5 +189,16 @@ router.delete('/:id/follower', isLoggedIn, async (req,res,next) => {
     
 });
 
+router.patch('/nickname' , isLoggedIn, async (req, res, next) => {
+    try{
+            await db.User.update({  nickname: req.body.nickname },
+                                 { where: { id: req.user.id}});
+            res.send(req.body.nickname);
+    }catch(e){
+        console.error(e);
+        next(e);
+    }
+   
+});
 
 module.exports = router;

@@ -63,6 +63,10 @@ const Signup = () => {
         setTermError(false);
         setTerm(e.target.checked);
     } , [term]);
+
+    if(me){
+        return null;
+    }
     
     return (
         <>

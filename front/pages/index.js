@@ -12,12 +12,6 @@ const Home = () => {
     const { me } = useSelector( state => state.user) ;
     const { mainPosts } = useSelector( state => state.post );
 
-    useEffect( ()=>{
-        dispatch({
-            type: LOAD_MAIN_POSTS_REQUEST,
-        });
-    }, []);
-
     return (
         <>
         <div>
@@ -31,6 +25,13 @@ const Home = () => {
 
 Home.propTypes = {
 
+}
+
+Home.getInitialProps = async ( context ) => {
+    console.log('!겟이니셜프롭스의 context의내용:  ' , Object.keys(context));
+   return  context.store.dispatch({
+        type: LOAD_MAIN_POSTS_REQUEST,
+    });
 }
 
 export default Home;
