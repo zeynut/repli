@@ -118,6 +118,7 @@ router.get('/:id/posts', async (req,res,next) => {
         next(e);
     }
 });
+
 router.post('/:id/follow', isLoggedIn , async (req,res,next) => {
     try{
          
@@ -152,7 +153,11 @@ router.get('/:id/followings', isLoggedIn, async (req,res,next) => {
     try{
         const user = await db.User.findOne({ 
             where: { id: parseInt(req.params.id , 10) || (req.user && req.user.id) || 0}});
-        const followers = await user.getFollowings({ attributes: ['id', 'nickname']});
+
+        const followers = await user.getFollowings({
+            limit: parseInt(req.query.limit , 10),
+            offset: parseInt(req.query.offset , 10),
+            attributes: ['id', 'nickname']});
         res.send(followers);
 
     }catch(e){
@@ -167,8 +172,12 @@ router.get('/:id/followers', isLoggedIn, async (req,res, next) => {
     
     try{
         const user = await db.User.findOne({ 
-            where: { id: parseInt(req.params.id , 10) || ( req.user && req.user.id ) || 0}});
-        const followers = await user.getFollowers({ attributes: ['id', 'nickname']});
+            where: { id: parseInt(req.params.id , 10) 
+                        || ( req.user && req.user.id ) || 0}});
+        const followers = await user.getFollowers({ 
+            limit: parseInt(req.query.limit , 10),
+            offset: parseInt(req.query.offset , 10),
+            attributes: ['id', 'nickname']});
         res.send(followers);
     }catch(e){
         console.error(e);

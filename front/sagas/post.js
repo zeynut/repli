@@ -1,4 +1,4 @@
-import { delay, all , call, fork, takeEvery, takeLatest, put } from 'redux-saga/effects';
+import { delay, all , call, fork, takeEvery, takeLatest, put, throttle } from 'redux-saga/effects';
 import { 
     ADD_POST_REQUEST, ADD_POST_SUCCESS,ADD_POST_FAILURE,
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
@@ -41,16 +41,16 @@ function* watchAddPost(){
 
 
 
-function loadMainPostsAPI(){
-    console.log('로드메인포스트api');
-    return axios.get('/posts');
+function loadMainPostsAPI(lastId = 0 , limit = 10){
+    // console.log('로드메인포스트api');
+    return axios.get(`/posts?lastId=${lastId}&limit=${limit}`);
 }
 
 function* loadMainPosts() {
     try{
-        console.log('로드메인포스트action');
-        const result = yield call(loadMainPostsAPI);
-        console.log('로드메인포스트result');
+        // console.log('로드메인포스트action');
+        const result = yield call(loadMainPostsAPI, action.lastId);
+        // console.log('로드메인포스트result');
         yield put({ type:LOAD_MAIN_POSTS_SUCCESS, data: result.data });
 
     }catch(e){
@@ -60,20 +60,20 @@ function* loadMainPosts() {
 }
 
 function* watchLoadMainPosts(){
-    yield takeLatest(LOAD_MAIN_POSTS_REQUEST,loadMainPosts)
+    yield throttle( 2000, LOAD_MAIN_POSTS_REQUEST, loadMainPosts)
 };
 
 
-function loadHashTagPostsAPI(tag){
-    console.log('로드hashtag포스츠api');
-    return axios.get(`/hashtag/${encodeURIComponent(tag)}`);
+function loadHashTagPostsAPI(tag, lastId){
+    // console.log('로드hashtag포스츠api');
+     return axios.get(`/hashtag/${encodeURIComponent(tag)}?lastId=${lastId}&limit=10`);
 }
 
 function* loadHashtagPosts(action) {
     try{
-        console.log('로드hashtag포스츠action');
-        const result = yield call(loadHashTagPostsAPI , action.data);
-        console.log('로드hashtag포스츠result',result);
+        // console.log('로드hashtag포스츠action');
+        const result = yield call(loadHashTagPostsAPI , action.data, action.lastId);
+        // console.log('로드hashtag포스츠result',result);
         yield put({ type:LOAD_HASHTAG_POSTS_SUCCESS , data: result.data });
 
     }catch(e){

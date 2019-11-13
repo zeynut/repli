@@ -21,6 +21,8 @@ export const initialState = {
     signUpData: {},
     isEditingNickname: false,
     editNicknameErrorReason: '',
+    hasMoreFollower: false,
+    hasMoreFollowing: false,
 }
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
@@ -220,13 +222,15 @@ export default ( state = initialState , action ) => {
         case LOAD_FOLLOWERS_REQUEST: {
             return {
                 ...state,
+                hasMoreFollower: action.offset? state.hasMoreFollower : true
                };
         }
         case LOAD_FOLLOWERS_SUCCESS: {
             
             return {
                     ...state,
-                  followerList: action.data,
+                  followerList: state.followerList.concat(action.data),
+                  hasMoreFollower: action.data.length === 3,
                 };
         }
         case LOAD_FOLLOWERS_FAILURE: {
@@ -237,13 +241,15 @@ export default ( state = initialState , action ) => {
         case LOAD_FOLLOWINGS_REQUEST: {
             return {
                 ...state,
+                hasMoreFollowing: action.offset? state.hasMoreFollowing: true,
                };
         }
         case LOAD_FOLLOWINGS_SUCCESS: {
             
             return {
                     ...state,
-                  followingList: action.data,
+                  followingList: state.followingList(action.data),
+                  hasMoreFollowing: action.data.length === 3,
                 };
         }
         case LOAD_FOLLOWINGS_FAILURE: {

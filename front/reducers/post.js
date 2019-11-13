@@ -8,6 +8,7 @@ export const initialState = {
     postAdded: false,
     addCommentErrorReason: false,
     commentAdded: false,
+    hasMorePost: false,
 };
 
 const dummyPost ={
@@ -170,60 +171,34 @@ export default ( state = initialState , action ) => {
                 addCommentErrorReason: action.error,
             }
         }
-
+        
+        case LOAD_USER_POSTS_REQUEST: 
+        case LOAD_HASHTAG_POSTS_REQUEST:
         case LOAD_MAIN_POSTS_REQUEST: {
             return {
                 ...state,
                 isAddingPost: true,
-               mainPosts:[],
+               mainPosts:action.lastId === 0 ? [] : state.mainPosts,
+               hasMorePost: action.lastId ? state.hasMorePost: true,
             }
         }
+        case LOAD_USER_POSTS_SUCCESS:
+        case LOAD_HASHTAG_POSTS_SUCCESS:
         case LOAD_MAIN_POSTS_SUCCESS:{
             return {
                 ...state,
-                isAddingPost: false,
-                mainPosts: action.data,
+                mainPosts: state.mainPosts.concat(action.data),
+                hasMorePost: action.data.length === 10,
               }
-        }
+            }
+        case LOAD_USER_POSTS_FAILURE:
+        case LOAD_HASHTAG_POSTS_FAILURE:
         case LOAD_MAIN_POSTS_FAILURE: {
             return {
                 ...state,
              }
         }
-        case LOAD_HASHTAG_POSTS_REQUEST: {
-            return {
-                ...state,
-              mainPosts:[],
-            }
-        }
-        case LOAD_HASHTAG_POSTS_SUCCESS:{
-            return {
-                ...state,
-               mainPosts: action.data,
-              }
-        }
-        case LOAD_HASHTAG_POSTS_FAILURE: {
-            return {
-                ...state,
-             }
-        }
-        case LOAD_USER_POSTS_REQUEST: {
-            return {
-                ...state,
-              mainPosts:[],
-            }
-        }
-        case LOAD_USER_POSTS_SUCCESS:{
-            return {
-                ...state,
-               mainPosts: action.data,
-              }
-        }
-        case LOAD_USER_POSTS_FAILURE: {
-            return {
-                ...state,
-             }
-        }
+         
         case UPLOAD_IMAGES_REQUEST: {
             return {
               ...state,

@@ -90,12 +90,12 @@ const PostCard = ({post}) => {
     } , []);
 
     const onUnfollow = useCallback( userId => () => {
-        dispatch({ type: UNFOLLOW_USER_REQUEST, data: userId })
+        dispatch({ type: UNFOLLOW_USER_REQUEST, data: userId });
     } , []);
 
     const onRemovePost = useCallback( userId => () =>{
-        dispatch({ type: REMOVE_POST_REQUEST, data: userId })
-    },  [])
+        dispatch({ type: REMOVE_POST_REQUEST, data: userId });
+    },  [ post && post.id]);
 
     return (
         <div>
