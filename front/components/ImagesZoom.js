@@ -1,20 +1,21 @@
 import React , {useState} from 'react';
 import PropTypes from 'prop-types';
 import Slick from 'react-slick';
-import { Icon } from 'antd';
+import {Overlay , Header, Slickwrapper , ImgWrapper , Indicator ,CloseBtn } from './ImagesZoomStyle';
+
+
 
 const ImagesZoom = ({images, onClose}) => {
     const [ currentSlide, setCurrentSlide ] = useState(0);
     
     return (
         <>
-        <div style={{ position: 'fixed' , zIndex: '5000' , top: '0', left: '0', right: '0', bottom: '0'}}>
-            <header style={{ height: 44, background: 'white', position: 'relative', padding: '0', textAlign: 'center'}}>
-                <h1>상세이미지</h1>
-                <Icon type="close" onClick={onClose} 
-                      style={{ position: 'absolute' , right: 0, top: 0, padding: 15, lineHeight: '14PX', cursor: 'pointer'}}/>
-            </header>
-            <div style={{ height: 'calc(100% - 44px)' , background: '#090909'}}>
+        <Overlay>
+            <Header>
+                <H1>상세이미지</H1>
+                <CloseBtn type="close" onClick={onClose} />                     
+            </Header>
+            <Slickwrapper>
                 <div>
                     <Slick
                     initialSlide={0}
@@ -26,23 +27,21 @@ const ImagesZoom = ({images, onClose}) => {
                      >
                          {images.map((v) => {
                              return (
-                                 <div>
+                                 <ImgWrapper>
                                      <img src={`http://localhost:3065/${v.src}`}
                                         style={{ margin: '0 auto', maxHeight: 750}} />
-                                 </div>
+                                 </ImgWrapper>
                              )
                          })}
                     </Slick>
-                    <div style={{ textAlign: 'center'}}>
-                        <div style={{ width: 75, height:30, lineHeight: '30px', borderRadius: 15,
-                             background:'#313131', display: 'inline-block', textAlign: 'center',
-                             color: 'white', fontSize: '15px'}}>
+                    <Indicator>
+                        <div>
                         {currentSlide + 1} / {images.length}
                         </div>
-                    </div>
+                    </Indicator>
                 </div>
-            </div>
-        </div>
+            </Slickwrapper>
+        </Overlay>
         </>
     );
 };

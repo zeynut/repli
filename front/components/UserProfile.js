@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Icon, Card, Avatar, Button } from "antd";
 import { useSelector , useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
+import {Link} from 'next/link';
 
 const UserProfile = () => {
     
@@ -17,9 +18,18 @@ const UserProfile = () => {
         <div>
             <Card 
                     style={{ width: 220 }}
-                    actions={[<div><Icon type="aliwangwang" key="twit"/>포스트<br/>{me.Posts.length}</div>,
-                             <div><Icon type="usergroup-add" key="following"/>팔로잉<br/>{me.Followings.length}</div>,
-                             <div><Icon type="team" key="followers"/>팔로워<br/>{me.Followers.length}</div>]}>
+                    actions={[
+                        <Link key="twit" href="/profile" >
+                            <a><div >포스트<br/>{me.Posts.length}</div></a>
+                        </Link>,
+                        <Link key="following" href="/profile" >
+                            <a><div >팔로잉<br/>{me.Followings.length}</div></a>
+                        </Link>,
+                        <Link  key="followers" href="/profile">
+                            <a><div>팔로워<br/>{me.Followers.length}</div></a>
+                        </Link>
+                    ]}
+                    >
                     <Card.Meta 
                     avatar={<Avatar>{me.nickname[0]}</Avatar>} 
                     title={me.nickname}
