@@ -25,6 +25,9 @@ class Mydocument extends Document {
         </head>
         <body {...bodyAttrs}>
              <Main/>
+             { process.env.NODE_ENV === 'production' &&
+                <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Ces6%2Ces7%2CNodeList.prototype.%40%40iterator%2CNodeList.prototype.forEach"></script>
+              }
              <NextScript/>
         </body>
     </html>

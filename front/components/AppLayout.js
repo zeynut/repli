@@ -17,8 +17,8 @@ const AppLayout = ({children}) => {
     return (
         <div>
         <Menu mode="horizontal">
-            <Menu.Item key="home"><Link href="/"><a>리플라이</a></Link></Menu.Item>
-            <Menu.Item key="profile"><Link href="/profile"><a>나의프로필</a></Link></Menu.Item>
+            <Menu.Item key="home"><Link prefetch href="/"><a>리플라이</a></Link></Menu.Item>
+            <Menu.Item key="profile"><Link prefetch href="/profile"><a>나의프로필</a></Link></Menu.Item>
             <Menu.Item key="mail">
                 <Input.Search 
                 enterButton 

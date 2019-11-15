@@ -25,7 +25,7 @@ export const initialState = {
     editNicknameErrorReason: '',
     hasMoreFollower: false,
     hasMoreFollowing: false,
-}
+  }
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
@@ -108,7 +108,7 @@ export default ( state = initialState , action ) => {
             case LOG_IN_FAILURE : {
                 draft.isLoggingIn = false;
                 draft.me = null;
-                draft.loginErrorReason = action.error;
+                draft.loginErrorReason = action.reason;
                 break;
                 // return {
                 //     ...state,

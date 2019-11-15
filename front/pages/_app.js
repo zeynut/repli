@@ -38,6 +38,8 @@ const Repli = ({Component , store, pageProps}) => {
                     name: 'og:description' , content: 'zeynut node sns'
                 },{
                     property: 'og:type' , content: 'website'
+                },{
+                    property: 'og.image', content: 'http://localhost:3060/favicon.ico',
                 }]}
                 link={[{
                     rel: 'shortcut icon' , href: '/favicon.ico'

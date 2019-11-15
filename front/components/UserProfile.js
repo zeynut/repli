@@ -19,13 +19,13 @@ const UserProfile = () => {
             <Card 
                     style={{ width: 220 }}
                     actions={[
-                        <Link key="twit" href="/profile" >
+                        <Link prefetch key="twit" href="/profile" >
                             <a><div >포스트<br/>{me.Posts.length}</div></a>
                         </Link>,
-                        <Link key="following" href="/profile" >
+                        <Link prefetch key="following" href="/profile" >
                             <a><div >팔로잉<br/>{me.Followings.length}</div></a>
                         </Link>,
-                        <Link  key="followers" href="/profile">
+                        <Link prefetch key="followers" href="/profile">
                             <a><div>팔로워<br/>{me.Followers.length}</div></a>
                         </Link>
                     ]}
