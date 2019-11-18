@@ -19,7 +19,7 @@ MyError.defaultProps = {
 }
 
 MyError.getInitialProps = async (context) => {
-    const statusCode = context.res ? context.res.statusCode : context.err ? err.statusCode : null ;
+    const statusCode = context.res ? context.res.statusCode : context.err ? context.err.statusCode : null ;
     return{ statusCode };
 }
 

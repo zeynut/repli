@@ -46,7 +46,7 @@ function loadMainPostsAPI(lastId = 0 , limit = 10){
     return axios.get(`/posts?lastId=${lastId}&limit=${limit}`);
 }
 
-function* loadMainPosts() {
+function* loadMainPosts(action) {
     try{
         // console.log('로드메인포스트action');
         const result = yield call(loadMainPostsAPI, action.lastId);

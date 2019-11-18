@@ -59,7 +59,7 @@ const PostCard = memo( ({post}) => {
             type: RETWEET_REQUEST,
             data: post.id,
         })
-    } , [me && me.id , post &&post.id]);
+    } , [id , post &&post.id]);
 
     const onFollow = useCallback( userId => () => {
         dispatch({ type: FOLLOW_USER_REQUEST, data: userId });
@@ -87,7 +87,7 @@ const PostCard = memo( ({post}) => {
            <Icon type="message" key="message" onClick={onToggleComment}/>,
            <Popover  key="ellipsis" content={(
                <Button.Group>
-                   {me && post.UserId === me.id ?
+                   {id && post.UserId === id ?
                    ( <>
                      <Button>수정</Button>
                       <Button type="danger" onClick={onRemovePost(post.id)}>삭제</Button></>)

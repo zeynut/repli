@@ -1,6 +1,6 @@
 import React from 'react';
 import Helment from 'react-helmet';
-import PropTypes from 'prop-types';
+
 import Document , { Main , NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -26,7 +26,7 @@ class Mydocument extends Document {
         <body {...bodyAttrs}>
              <Main/>
              { process.env.NODE_ENV === 'production' &&
-                <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Ces6%2Ces7%2CNodeList.prototype.%40%40iterator%2CNodeList.prototype.forEach"></script>
+                <script src="https://polyfill.io/v3/polyfill.min.js?features=es6,es7,es8,es9,NodeList.prototype.forEach&flags=gated" />
               }
              <NextScript/>
         </body>
@@ -34,9 +34,6 @@ class Mydocument extends Document {
        )
     }
 }
-Mydocument.propTypes={
-    helmet: PropTypes.object.isrequired,
-    styleTags: PropTypes.string.isRequired,
-}
+
 
 export default Mydocument;

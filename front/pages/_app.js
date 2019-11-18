@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import { Provider } from 'react-redux';
 import { createStore , compose , applyMiddleware } from 'redux';
@@ -12,16 +11,59 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import Helmet from 'react-helmet';
-import App , { Container} from 'next/app';
+import App  , {Container} from 'next/app';
 
-const Repli = ({Component , store, pageProps}) => {
+class Repli extends App {
+
+    static propTypes = {
+        Component: PropTypes.elementType.isRequired,
+        store: PropTypes.object.isRequired,
+        pageProps: PropTypes.object.isRequired,
+        isServer: PropTypes.bool.isRequired
+    }
+
+
+static defaultProps = {
+    pageProps: {}
+}
+
+//만약 getinitialprops 가 있는 페이지는 context(ctx) 를 pageprops 에 넣어서 잔달한다//
+//받는쪽..다른페이지..에서는 context 로 받음
+//서버 관련 명령어들도 다 여기에 씀
+  
+static getInitialProps = async (context) => {
+    const { ctx } = context;
+    const { store } = ctx;
+    let pageProps = {};
+    const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+    console.log(context);
+    console.log('!cookie쿠키입니다:' , cookie);
+
+    if( ctx.isServer && cookie){
+        axios.defaults.headers.Cookie = cookie;
+    }
+    const state = ctx.store.getState();
+
+    if(!state.user.me){
+        store.dispatch({type:LOAD_USER_REQUEST});
+    }
+    if( context.Component.getInitialProps ){
+        pageProps = await context.Component.getInitialProps(ctx);
+    }
+    
+    return { pageProps , isServer: ctx.isServer };
+};
+
+render(){
+
+    const {Component , store, pageProps, isServer} = this.props;
    
     return (
         <>
         <Container>
         <Provider store={store}>
             <Helmet
-                title="NODE_SNS"
+                title="Repli"
                 htmlAttributes={{ lang: 'ko'}}
                 meta={[{
                     charset: 'UTF-8',
@@ -53,54 +95,28 @@ const Repli = ({Component , store, pageProps}) => {
 
                 }]}
             />
-            <AppLayout>
+            <AppLayout isServer={isServer}>
                 <Component {...pageProps}/>
             </AppLayout>
         </Provider>
         </Container>
         </>
-    );
+     );
+    }
 }
 
-Repli.propTypes = {
-    Component: PropTypes.elementType.isRequired,
-    store: PropTypes.object.isRequired,
-    pageProps: PropTypes.object.isRequired
-}
-//만약 getinitialprops 가 있는 페이지는 context(ctx) 를 pageprops 에 넣어서 잔달한다//
-//받는쪽..다른페이지..에서는 context 로 받음
-//서버 관련 명령어들도 다 여기에 씀
-  
-Repli.getInitialProps = async (context) => {
-    console.log(context);
-    const { ctx , Component } = context;
-    let pageProps = {};
-    const state = ctx.store.getState();
-    const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    console.log('!cookie쿠키입니다:' , cookie);
-    if( ctx.isServer && cookie){
-        axios.defaults.headers.Cookie = cookie;
-    }
-    if( Component.getInitialProps ){
-        pageProps = await Component.getInitialProps(ctx) || {};
-    }
-    if(!state.user.me){
-        ctx.store. dispatch({type:LOAD_USER_REQUEST});
-    }
-    return { pageProps };
-};
-//const middlewares = [sagaMiddleware];
+   
 
 
+
+    
 const configureStore = (initialState , options ) => {
     const sagaMiddleware = createSagaMiddleware();
-    
     const middlewares = [sagaMiddleware, (store) => (next) => (action) => {
         next(action);
     }];
     const enhancer = process.env.NODE_ENV === 'production' ?
-        compose(applyMiddleware(...middlewares))
+       compose(applyMiddleware(...middlewares))
      : compose(applyMiddleware(...middlewares),
         !options.isServer && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 
         'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,);

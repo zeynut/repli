@@ -6,6 +6,7 @@ import { LOAD_HASHTAG_POSTS_REQUEST } from '../reducers/post';
 
 
 const Hashtag = ({tag}) => {
+    const dispatch = useDispatch();
     console.log('!해쉬테그의TAG:',tag);
     
     const {mainPosts,hasMorePost} = useSelector( state => state.post);
@@ -16,12 +17,11 @@ const Hashtag = ({tag}) => {
         if(hasMorePost){
             dispatch({
                 type: LOAD_HASHTAG_POSTS_REQUEST.REQUEST,
-                lastId: mainPosts[mainPosts.length - 1].id && mainPosts[mainPosts.length - 1].id,
+                lastId: mainPosts[mainPosts.length - 1] && mainPosts[mainPosts.length - 1].id,
                 data: tag,
             });
         }
-        }
-    } , [hasMorePost , mainPosts.length]);
+        }} , [hasMorePost , mainPosts.length]);
 
     useEffect( () => { 
         window.addEventListener('scroll', onScroll);
@@ -55,7 +55,7 @@ Hashtag.getInitialProps = async (context) => {
         data: tag
     })
 
-    return { tag : tag };
+    return { tag };
 };
 
 export default Hashtag;
