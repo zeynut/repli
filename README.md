@@ -3,18 +3,45 @@
  
 [Front]
 
-react, react-dom 사용
+React js
 
-next 사용
+Hooks
 
-antd 사용
+Next + Express
 
-redux , react-redux 사용 
+@next/bundle-analyzer
 
-redux_devtools 사용
+Redux + ReduxSagsa
 
-useDispatch , useSelector 사용
+.Env
 
-redux-saga 사용
+Immer
+
+Helmet
+
+Ant Design
+
+Styled Component
+
+cross-env
+
+moment
+
+compression-webpack-plugin
+
+polypill.io
 
 [Back]
+
+Node js
+
+Express
+
+Seauelize(ORM)
+
+Mysql
+
+Passport
+
+.Env
+
