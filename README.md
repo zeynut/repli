@@ -1,5 +1,5 @@
 # repli
- 정치 참여 앱 sns 
+ 정치 참여 웹 앱
  SNS_conversation
  
 [Front]
